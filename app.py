@@ -29,16 +29,22 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 async def send_signal(update: Update, context: CallbackContext) -> None:
     result = random.choice(["⬆️", "⬇️"])
+    
+    # Random signal choice (⬆️ or ⬇️)
     if result == "⬆️":
         await context.bot.send_sticker(chat_id=update.message.from_user.id, sticker=STICKER_ID)
+        await context.bot.send_message(
+            chat_id=update.message.from_user.id,
+            text="Signal: ⬆️ Yukarı yönlü sinyal.",
+            reply_markup=signal_reply_markup
+        )
     else:
         await context.bot.send_sticker(chat_id=update.message.from_user.id, sticker=STICKER_ID2)
-
-    await context.bot.send_message(
-        chat_id=update.message.from_user.id,
-        text="Lütfen bir seçenek seçin:",
-        reply_markup=signal_reply_markup
-    )
+        await context.bot.send_message(
+            chat_id=update.message.from_user.id,
+            text="Signal: ⬇️ Aşağı yönlü sinyal.",
+            reply_markup=signal_reply_markup
+        )
 
 async def handle_selection(update: Update, context: CallbackContext) -> None:
     text = update.message.text
@@ -52,6 +58,8 @@ async def handle_selection(update: Update, context: CallbackContext) -> None:
             text="Bir OTC döviz çifti seçin:",
             reply_markup=main_reply_markup
         )
+    elif text == "New Signal":
+        await send_signal(update, context)
     else:
         await context.bot.send_message(
             chat_id=update.message.from_user.id,

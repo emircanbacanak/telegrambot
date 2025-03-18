@@ -1,1 +1,1 @@
-echo "worker: python app.py" > Procfile
+worker: python app.py
